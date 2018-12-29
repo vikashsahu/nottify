@@ -4,11 +4,21 @@ require 'open-uri'
 
 url = "http://usatt.simplycompete.com/t/search?embedded=true"
 
-doc = open(url, &:read)
+cond = false
+increment = 5
 
-nokogiriDoc = Nokogiri::HTML(doc)
+while !cond || increment > 0
 
-iccNode = nokogiriDoc.at('td:contains("2018 ICC Butterfly America Open")')
+	doc = open(url, &:read)
+	nokogiriDoc = Nokogiri::HTML(doc)
 
-puts iccNode.parent.inner_html.include?('Results not processed yet')
+	iccNode = nokogiriDoc.at('td:contains("2018 ICC Butterfly America Open")')
 
+	cond = iccNode.parent.inner_html.include?('Results not processed yet')
+	puts cond
+
+	increment--
+
+	sleep(30) #seconds
+
+end
