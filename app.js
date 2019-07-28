@@ -1,43 +1,34 @@
-const http = require('http');
+const https = require('https');
 const cheerio = require('cheerio');
 
-const hostname = '127.0.0.1';
-const port = 3000;
+var usattUrl = 'https://usatt.simplycompete.com/t/search?embedded=true';
+var minutes = 10, timeInterval = minutes * 60 * 1000;
 
-var options = {
-	host: 'usatt.simplycompete.com',
-	port: 80,
-	path: '/t/search?embedded=true'
-};
+//execute every 'minutes' number of minutes
+setInterval(reqAndParse, timeInterval);
 
-const server = http.createServer((req, res) => {
+function reqAndParse() {
+	https.get(usattUrl, (resp) => {
+	let data = '';
 
-	var minutes = 5, timeInterval = minutes * 60 * 1000;
-	setInterval(function() {
-		http.get(options, function(res) {
-			console.log("Got response: " + res);
+	//a chunk of data has been received
+	resp.on('data', (chunk) => {
+		data += chunk;
+	});
 
-			//chunk is the HTML document
-			res.on("data", function(chunk) {
-				//console.log("Body: " + chunk);
-			
-				//pass the HTML document into cheerio so we can parse it
-				const $ = cheerio.load(chunk);
-				var tournamentCount = $( "#list-tournament > p > strong" ).html();
-				if (tournamentCount != null) {
-					console.log("tournament count: " + tournamentCount);
-				}
-			});
-		}).on('error', function(e) {
-			console.log("Got error: " + e.message);
-		});
-	}, timeInterval);
+	//received the whole response
+	resp.on('end', () => {
+		//pass the HTML document into cheerio so we can parse it
+		const $ = cheerio.load(data);
 
-	res.statusCode = 200;
-	res.setHeader('Content-Type', 'text/plain');
-	res.end('Hello World\n');
-});
+		//parse using the html selectors, similar to jQuery
+		var tournamentCount = $("#list-tournament > p > strong").html();
+		if (tournamentCount != null) {
+			console.log("tournament count: " + tournamentCount);
+		}
+	});
 
-server.listen(port, hostname, () => {
-	console.log(`Server running at http://${hostname}:${port}/`);
-});
+	}).on("error", (err) => {
+		console.log("Error: " + err.message);
+	});
+}//end reqAndParse
