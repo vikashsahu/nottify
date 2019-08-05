@@ -4,7 +4,9 @@
   "description": "ratings notification app",
   "main": "app.js",
   "dependencies": {
-    "cheerio": "^1.0.0-rc.3"
+    "aws-sdk": "^2.503.0",
+    "cheerio": "^1.0.0-rc.3",
+    "googleapis": "^39.2.0"
   },
   "devDependencies": {},
   "scripts": {
