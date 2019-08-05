@@ -23,7 +23,7 @@ const body_html = `<html>
 //character encoding for the email
 const charset = "UTF-8";
 //create a new SES object
-var ses = new aws.SES();
+var ses = new AWS.SES();
 //specify the params to pass to the API
 var params = {
 	Source: sender,
