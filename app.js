@@ -57,9 +57,11 @@ var minutes = 10, timeInterval = minutes * 60 * 1000;
 //globally store the tournamentCount var to check for diffs. Update if changed
 var tournamentCountGlobal = 7350;
 
+//make the server
+const server = https.createServer();
 
 //execute every 'minutes' number of minutes
-setInterval(reqAndParse, timeInterval);
+//setInterval(reqAndParse, timeInterval);
 
 function reqAndParse() {
 	https.get(usattUrl, (resp) => {
@@ -100,3 +102,7 @@ function reqAndParse() {
 		console.log("Error: " + err.message);
 	});
 }//end func reqAndParse()
+
+console.log("app.js is running...");
+reqAndParse();
+
