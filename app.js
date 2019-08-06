@@ -19,7 +19,7 @@ const body_html = `<html>
 	<h1>Nottify has found a new tournament processed for ratings</h1>
 	<p>Email sent with Amazon SES using the AWS SDK for JavaScript in Node.js</p>
 </body>
-</html?`;
+</html>`;
 //character encoding for the email
 const charset = "UTF-8";
 //create a new SES object
